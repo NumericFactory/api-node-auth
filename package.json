@@ -1,0 +1,37 @@
+{
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev src/index.ts"
+  },
+  "name": "toptal-hacking-jwt",
+  "version": "1.0.0",
+  "description": "* * *\r This code is published as part of the [corresponding blog article](FINAL-ARTICLE-URL-HERE) at the Toptal Engineering Blog.\r For the latest articles on software development, visit <https://www.toptal.com/developers/blog> and subscribe to our newsletter.\r * * *",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GonzaloHirsch/toptal-hacking-jwt.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GonzaloHirsch/toptal-hacking-jwt/issues"
+  },
+  "homepage": "https://github.com/GonzaloHirsch/toptal-hacking-jwt#readme",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^8.5.9",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.2",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^3.0.3"
+  }
+}
