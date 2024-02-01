@@ -25,7 +25,7 @@ interface Genre {
     name: string
 }
 
-interface Review {
+export interface Review {
     id: number;
     score: number;
     comment: string;
@@ -67,7 +67,7 @@ export enum Roles {
 }
 
 
-let reviews: Review[] = [
+export let reviews: Review[] = [
     {
         id: 1,
         user_id: 1,
@@ -105,23 +105,16 @@ export const getAllReviews = (): Review[] => {
 };
 
 export const createReview = async (
+    user_id: number,
     score: number,
     comment: string,
     media_type: 'movie' | 'tv',
     media_id: number,
-    user_id: number): Promise<Review> => {
-
-    // Reader: Add checks according to your custom use case.
-    // if (username.length === 0) throw new ClientError('Invalid username');
-    // else if (password.length === 0) throw new ClientError('Invalid password');
-    // // Check for duplicates.
-    // if (getUserByUsername(username) != undefined) throw new ClientError('Username is taken');
-
+): Promise<Review> => {
     // Generate a user id.
-
     const newid = Date.now();
-
-    const newReview = {
+    // generate new review
+    const newReview: Review = {
         id: newid,
         score: score,
         comment: comment,
@@ -129,12 +122,10 @@ export const createReview = async (
         media_id: media_id,
         user_id: user_id
     }
-
-
-    // Create the user.
+    // add review to reviews
     reviews = [...reviews, newReview];
     return newReview;
-};
+}
 
 
 
