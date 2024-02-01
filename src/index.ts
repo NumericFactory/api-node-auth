@@ -7,7 +7,7 @@ import config from './config';
 
 // Instantiate an Express object.
 const app = express();
-app.use(cors())
+// app.use(cors())
 app.use(json());
 
 // Add our route object to the Express object. 
