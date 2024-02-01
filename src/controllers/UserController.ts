@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ForbiddenError } from '../exceptions/forbiddenError';
 import { ClientError } from '../exceptions/clientError';
 import { CustomRequest } from '../middleware/checkJwt';
-import { getAllUsers, Roles, getUser, createUser, updateUser, deleteUser } from '../state/users';
+import { getAllUsers, Roles, getUser, createUser, updateUser, deleteUser, getAllReviews } from '../state/users';
 
 class UserController {
     static listAll = async (req: Request, res: Response, next: NextFunction) => {
@@ -81,14 +81,46 @@ class UserController {
         res.status(204).type('json').send();
     };
 
-    static addMovieToWatchList = async (req: Request, res: Response, next: NextFunction) => {
-        const id: string = req.params.id;
-        const movie = req.body;
 
-        console.log(movie);
-        res.status(201).type('json').send(movie.id);
+
+
+
+
+
+
+
+
+    static addMovieToWatchList = async (req: Request, res: Response, next: NextFunction) => {
+
+        // Validate permissions.
+        if ((req as CustomRequest).token.payload.role === Roles.USER && req.params.id !== (req as CustomRequest).token.payload.userId) {
+            throw new ForbiddenError('Not enough permissions');
+        }
+
+        // Get values from the body.
+        const { user_id } = req.body;
+        const newReview = req.body;
+
+        // retrieve and update Review 
+        let reviews = getAllReviews();
+        reviews = [...reviews, newReview];
+
+        // Retrieve and update the user record.
+        const user = getUser(user_id);
+        // const updatedUser = updateUser(id, username || user.username, role || user.role);
+
+        // NOTE: We will only get here if all new user information 
+        // is valid and the user was updated.
+        // Send an HTTP "No Content" response.
+        res.status(201).type('json').send(newReview.id);
 
     }
+
+
+
+
+
+
 
     static addTvToWatchList = async (req: Request, res: Response, next: NextFunction) => {
         const id: string = req.params.id;

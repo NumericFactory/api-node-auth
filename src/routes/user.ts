@@ -30,7 +30,7 @@ router.post('/:id([0-9]{1,24})/watchlist/movie', [checkJwt, checkRole([Roles.USE
 router.post('/:id([0-9]{1,24})/watchlist/tv', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.addTvToWatchList));
 
 // Get 
-router.get('/:id([0-9]{1,24})/watchlist', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.getWatchList));
+// router.get('/:id([0-9]{1,24})/watchlist', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.getWatchList));
 
 
 export default router;

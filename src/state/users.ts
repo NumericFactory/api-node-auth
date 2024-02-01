@@ -11,6 +11,7 @@ export interface IUser {
     password?: string;
     role: Roles;
     watchList: WatchList;
+    reviews: Review[];
 }
 
 // User WatchList
@@ -19,23 +20,126 @@ export interface WatchList {
     tv: TvShow[]
 }
 
-export interface Movie {
+interface Genre {
     id: number,
-    titre: string,
-    image_landscape: string,
-    image_protrait: string
+    name: string
+}
+
+interface Review {
+    id: number;
+    score: number;
+    comment: string;
+    media_type: 'movie' | 'tv';
+    media_id: number;
+    user_id: number;
+}
+
+export interface Movie {
+    id: number;
+    titre: string;
+    duration: undefined | number;
+    resume: string;
+    image_landscape: string;
+    image_protrait: string;
+    score: number;
+    genres: Genre[];
+    date: Date;
+    hasVideo: boolean;
+    video: string | undefined;
+    reviews: Review[];
 }
 export interface TvShow {
-    id: number,
-    titre: string,
-    image_landscape: string,
-    image_protrait: string
+    id: number;
+    titre: string;
+    resume: string;
+    episode_runtime: number | undefined;
+    image_landscape: string;
+    image_protrait: string;
+    score: number;
+    genres: Genre[];
+    date: Date;
+    video: any[];
 }
 // Our API supports both an admin and regular user, as defined by a role.
 export enum Roles {
     ADMIN = 'ADMIN',
     USER = 'USER'
 }
+
+
+let reviews: Review[] = [
+    {
+        id: 1,
+        user_id: 1,
+        score: 5,
+        comment: "Super Film",
+        media_type: 'movie',
+        media_id: 572802
+    },
+    {
+        id: 2,
+        user_id: 2,
+        score: 4,
+        comment: "Comme un poisson dans l'eau",
+        media_type: 'movie',
+        media_id: 572802
+    },
+    {
+        id: 3,
+        user_id: 3,
+        score: 2,
+        comment: "Bof! Film très moyen",
+        media_type: 'movie',
+        media_id: 572802
+    }
+
+];
+
+// Generate a copy of the users without their passwords.
+const generateSafeCopyOfReviews = (review: Review): Review => {
+    let _review = { ...review };
+    return _review;
+};
+export const getAllReviews = (): Review[] => {
+    return Object.values(reviews).map((elem) => generateSafeCopyOfReviews(elem));
+};
+
+export const createReview = async (
+    score: number,
+    comment: string,
+    media_type: 'movie' | 'tv',
+    media_id: number,
+    user_id: number): Promise<Review> => {
+
+    // Reader: Add checks according to your custom use case.
+    // if (username.length === 0) throw new ClientError('Invalid username');
+    // else if (password.length === 0) throw new ClientError('Invalid password');
+    // // Check for duplicates.
+    // if (getUserByUsername(username) != undefined) throw new ClientError('Username is taken');
+
+    // Generate a user id.
+
+    const newid = Date.now();
+
+    const newReview = {
+        id: newid,
+        score: score,
+        comment: comment,
+        media_type: media_type,
+        media_id: media_id,
+        user_id: user_id
+    }
+
+
+    // Create the user.
+    reviews = [...reviews, newReview];
+    return newReview;
+};
+
+
+
+/******************************* */
+
 
 // Let's initialize our example API with some user records.
 // NOTE: We generate passwords using the Node.js CLI with this command:
@@ -47,7 +151,8 @@ let users: { [id: string]: IUser } = {
         // Plaintext password: testuser1_password
         password: '$2b$12$ov6s318JKzBIkMdSMvHKdeTMHSYMqYxCI86xSHL9Q1gyUpwd66Q2e',
         role: Roles.USER,
-        watchList: { movies: [], tv: [] }
+        watchList: { movies: [], tv: [] },
+        reviews: []
     },
     '1': {
         id: '1',
@@ -55,7 +160,8 @@ let users: { [id: string]: IUser } = {
         // Plaintext password: testuser2_password
         password: '$2b$12$63l0Br1wIniFBFUnHaoeW.55yh8.a3QcpCy7hYt9sfaIDg.rnTAPC',
         role: Roles.USER,
-        watchList: { movies: [], tv: [] }
+        watchList: { movies: [], tv: [] },
+        reviews: []
     },
     '2': {
         id: '2',
@@ -63,7 +169,8 @@ let users: { [id: string]: IUser } = {
         // Plaintext password: testuser3_password
         password: '$2b$12$fTu/nKtkTsNO91tM7wd5yO6LyY1HpyMlmVUE9SM97IBg8eLMqw4mu',
         role: Roles.USER,
-        watchList: { movies: [], tv: [] }
+        watchList: { movies: [], tv: [] },
+        reviews: []
     },
     '3': {
         id: '3',
@@ -71,7 +178,8 @@ let users: { [id: string]: IUser } = {
         // Plaintext password: testadmin1_password
         password: '$2b$12$tuzkBzJWCEqN1DemuFjRuuEs4z3z2a3S5K0fRukob/E959dPYLE3i',
         role: Roles.ADMIN,
-        watchList: { movies: [], tv: [] }
+        watchList: { movies: [], tv: [] },
+        reviews: []
     },
     '4': {
         id: '4',
@@ -79,7 +187,8 @@ let users: { [id: string]: IUser } = {
         // Plaintext password: testadmin2_password
         password: '$2b$12$.dN3BgEeR0YdWMFv4z0pZOXOWfQUijnncXGz.3YOycHSAECzXQLdq',
         role: Roles.ADMIN,
-        watchList: { movies: [], tv: [] }
+        watchList: { movies: [], tv: [] },
+        reviews: []
     }
 };
 
@@ -131,7 +240,8 @@ export const createUser = async (username: string, password: string, role: Roles
         password: await bcrypt.hash(password, 12),
         role,
         id,
-        watchList: { movies: [], tv: [] }
+        watchList: { movies: [], tv: [] },
+        reviews: []
     };
     return generateSafeCopy(users[id]);
 };
