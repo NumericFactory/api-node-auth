@@ -10,13 +10,9 @@ import { NotFoundError } from '../exceptions/notFoundError';
 class ReviewController {
 
     static addNewReview = async (req: Request, res: Response, next: NextFunction) => {
-        // // Validate permissions.
-        // if ((req as CustomRequest).token.payload.role === Roles.USER &&
-        //     req.params.id !== (req as CustomRequest).token.payload.userId) {
-        //     throw new ForbiddenError('Not enough permissions');
-        // }
+        const user_id = (req as CustomRequest).token.payload.userId;
         // Get values from the body.
-        const { user_id, score, comment, media_type, media_id } = req.body;
+        const { score, comment, media_type, media_id } = req.body;
         // We can only create regular review through this function.
         const newReview = await createReview(user_id, score, comment, media_type, media_id);
         // Send an HTTP "Created" response.
