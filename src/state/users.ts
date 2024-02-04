@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { NotFoundError } from '../exceptions/notFoundError';
 import { ClientError } from '../exceptions/clientError';
+import { IReview, WatchList } from "../config/models/all.model";
 
 // Define the code interface for user objects.
 export interface IUser {
@@ -11,123 +12,14 @@ export interface IUser {
     password?: string;
     role: Roles;
     watchList: WatchList;
-    reviews: Review[];
+    reviews: IReview[];
 }
 
-// User WatchList
-export interface WatchList {
-    movies: Movie[],
-    tv: TvShow[]
-}
-
-interface Genre {
-    id: number,
-    name: string
-}
-
-export interface Review {
-    id: number;
-    score: number;
-    comment: string;
-    media_type: 'movie' | 'tv';
-    media_id: number;
-    user_id: number;
-}
-
-export interface Movie {
-    id: number;
-    titre: string;
-    duration: undefined | number;
-    resume: string;
-    image_landscape: string;
-    image_protrait: string;
-    score: number;
-    genres: Genre[];
-    date: Date;
-    hasVideo: boolean;
-    video: string | undefined;
-    reviews: Review[];
-}
-export interface TvShow {
-    id: number;
-    titre: string;
-    resume: string;
-    episode_runtime: number | undefined;
-    image_landscape: string;
-    image_protrait: string;
-    score: number;
-    genres: Genre[];
-    date: Date;
-    video: any[];
-}
 // Our API supports both an admin and regular user, as defined by a role.
 export enum Roles {
     ADMIN = 'ADMIN',
     USER = 'USER'
 }
-
-
-export let reviews: Review[] = [
-    {
-        id: 1,
-        user_id: 1,
-        score: 5,
-        comment: "Super Film",
-        media_type: 'movie',
-        media_id: 572802
-    },
-    {
-        id: 2,
-        user_id: 2,
-        score: 4,
-        comment: "Comme un poisson dans l'eau",
-        media_type: 'movie',
-        media_id: 572802
-    },
-    {
-        id: 3,
-        user_id: 3,
-        score: 2,
-        comment: "Bof! Film très moyen",
-        media_type: 'movie',
-        media_id: 572802
-    }
-
-];
-
-// Generate a copy of the users without their passwords.
-const generateSafeCopyOfReviews = (review: Review): Review => {
-    let _review = { ...review };
-    return _review;
-};
-export const getAllReviews = (): Review[] => {
-    return Object.values(reviews).map((elem) => generateSafeCopyOfReviews(elem));
-};
-
-export const createReview = async (
-    user_id: number,
-    score: number,
-    comment: string,
-    media_type: 'movie' | 'tv',
-    media_id: number,
-): Promise<Review> => {
-    // Generate a user id.
-    const newid = Date.now();
-    // generate new review
-    const newReview: Review = {
-        id: newid,
-        score: score,
-        comment: comment,
-        media_type: media_type,
-        media_id: media_id,
-        user_id: user_id
-    }
-    // add review to reviews
-    reviews = [...reviews, newReview];
-    return newReview;
-}
-
-
 
 /******************************* */
 

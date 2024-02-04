@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ForbiddenError } from '../exceptions/forbiddenError';
 import { ClientError } from '../exceptions/clientError';
 import { CustomRequest } from '../middleware/checkJwt';
-import { getAllUsers, Roles, getUser, createUser, updateUser, deleteUser, getAllReviews, createReview, Review } from '../state/users';
+import { getAllUsers, Roles, getUser, createUser, updateUser, deleteUser } from '../state/users';
 
 class UserController {
     static listAll = async (req: Request, res: Response, next: NextFunction) => {
@@ -82,49 +82,6 @@ class UserController {
     };
 
 
-
-
-
-
-
-
-
-
-    static addMovieToWatchList = async (req: Request, res: Response, next: NextFunction) => {
-
-    }
-
-
-    static addNewReview = async (req: Request, res: Response, next: NextFunction) => {
-        // // Validate permissions.
-        // if ((req as CustomRequest).token.payload.role === Roles.USER && req.params.id !== (req as CustomRequest).token.payload.userId) {
-        //     throw new ForbiddenError('Not enough permissions');
-        // }
-        // Get values from the body.
-        const { user_id, score, comment, media_type, media_id } = req.body;
-        // We can only create regular review through this function.
-        const newReview = await createReview(user_id, score, comment, media_type, media_id);
-
-        // const user = getUser(user_id);
-        // const updatedUser = updateUser(id, username || user.username, role || user.role);
-
-        // Send an HTTP "Created" response.
-        res.status(201).type('json').send(newReview);
-    }
-
-
-    static getReviews = async (req: Request, res: Response, next: NextFunction) => {
-
-        const review_id = req.params.movie_id;
-        // retrieve  Review 
-        const reviews = getAllReviews().filter(
-            (review: Review) => review.media_type === 'movie' && review.media_id.toString() === review_id
-        );
-
-        // Send an HTTP "No Content" response.
-        res.status(200).type('json').send(reviews);
-
-    }
 
 
 

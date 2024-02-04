@@ -26,11 +26,11 @@ router.delete('/:id([0-9]{1,24})', [checkJwt, checkRole([Roles.ADMIN])], asyncHa
 /*
   custom ROUTES for api movie
 */
-router.post('/:id([0-9]{1,24})/watchlist/movie', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.addMovieToWatchList));
-router.post('/:id([0-9]{1,24})/watchlist/tv', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.addTvToWatchList));
+// router.post('/:id([0-9]{1,24})/watchlist/movie', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.addMovieToWatchList));
+// router.post('/:id([0-9]{1,24})/watchlist/tv', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.addTvToWatchList));
 
-router.post('/reviews', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.addNewReview));
-router.get('/reviews/:id', asyncHandler(UserController.getReviews))
+// router.post('/reviews', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.addNewReview));
+// router.get('/reviews/:id', asyncHandler(UserController.getReviews))
 
 // Get 
 // router.get('/:id([0-9]{1,24})/watchlist', [checkJwt, checkRole([Roles.USER, Roles.ADMIN])], asyncHandler(UserController.getWatchList));
